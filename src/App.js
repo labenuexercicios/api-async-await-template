@@ -91,6 +91,8 @@ function App() {
   // D- antes, o estado pesquisa tinha nome e email vazio, apos a invocação da função enviardados no clicar do botao, eu seto a pesquisa com os estados com valores capturados
   //E- faço a função assincrona pesquisaUsuarios e passo a pesquisa como parametro fazendo a requisição  e dou um setUsuarios com a respota
   //F-um useeffect invocando a função para sua execução, passando pesquisa no parametro e o estaod pesquisa no array de dependencias
+  //OBS: O CÓDIGO FOI REFATORADO
+  // ao io inves de estados para nome, e email dos inputs de pesquisa, eu coloquei eles direto no estado pesquisa. os inputs recebem o pesquisa.nome e pesquisa.email, faco uma função de setar esses inputs fazendo uma copia do estado com o spread operator, e cada chave tendo como valor o e.target.value, e ao inves de chamar o enviar dados no botão, ja chamo direto a pesquisa ususario e passo como parametro a pesquisa. com isso não precias do use effect tbm
   const pesquisaUsuario = async(pesquisa) => {
     console.log("pesquisa dentro da funcao",pesquisa)
     try{
@@ -106,32 +108,32 @@ function App() {
    
   };
 
-  useEffect(() => {
-    pesquisaUsuario(pesquisa);
-  }, [pesquisa]);
+  // useEffect(() => {
+  //   pesquisaUsuario(pesquisa);
+  // }, [pesquisa]);
 
   
 
-  const onChangeName = (e) => {
-    setNome(e.target.value);
-  };
+  // const onChangeName = (e) => {
+  //   setNome(e.target.value);
+  // };
 
-  const onChangeEmail = (e) => {
-    setEmail(e.target.value);
-  };
+  // const onChangeEmail = (e) => {
+  //   setEmail(e.target.value);
+  // };
 
   //2.1
-  const enviarDados = () => {
-    const novaPesquisa = {
-      nome,
-      email,
-    };
-    setPesquisa(novaPesquisa);
+  // const enviarDados = () => {
+  //   const novaPesquisa = {
+  //     nome,
+  //     email,
+  //   };
+  //   setPesquisa(novaPesquisa);
    
-    setNome("")
-    setEmail("")
+  //   setNome("")
+  //   setEmail("")
     
-  };
+  // };
 
   const onClickVoltar = () => {
     getUsuarios();
@@ -155,16 +157,16 @@ function App() {
             <ContainerBarra>
               <div>
                 <input
-                  value={nome}
-                  onChange={onChangeName}
+                  value={pesquisa.nome}
+                  onChange={(e)=>setPesquisa({...pesquisa, nome:e.target.value})}
                   placeholder="Nome"
                 />
                 <input
-                  value={email}
-                  onChange={onChangeEmail}
+                  value={pesquisa.email}
+                  onChange={(e)=>setPesquisa({...pesquisa, email:e.target.value})}
                   placeholder="Email"
                 />
-                <button type="submit" onClick={enviarDados}>
+                <button type="submit" onClick={()=>pesquisaUsuario(pesquisa)}>
                   Pesquisar
                 </button>
               </div>
