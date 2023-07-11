@@ -23,6 +23,10 @@ function App() {
     getUsuarios();
   }, []);
 
+  useEffect(() => {
+    pesquisaUsuario(pesquisa);
+  }, [pesquisa]);
+
   const getUsuarios = () => {
     axios
       .get(
@@ -41,8 +45,21 @@ function App() {
       });
   };
 
-  const pesquisaUsuario = (pesquisa) => {
-   
+  const pesquisaUsuario = async (pesquisa) => {
+    
+    try {
+      const resp = await axios.get(`${BASE_URL}/search?name=${pesquisa.nome}&email=${pesquisa.email}`, {
+        headers: {
+          Authorization: AUTH_TOKEN
+        }
+      })
+
+      resp.data.length ? setUsuarios(resp.data) : getUsuarios()
+
+      console.log(resp)
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   const onChangeName = (e) => {
@@ -62,6 +79,8 @@ function App() {
    
     setNome("")
     setEmail("")
+
+    pesquisaUsuario()
     
   };
 
